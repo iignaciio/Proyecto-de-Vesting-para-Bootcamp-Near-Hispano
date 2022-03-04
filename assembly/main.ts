@@ -1,32 +1,45 @@
-import { PostedMessage, messages } from './model';
+import { List, listsStorage, ListItem, listsItemsStorage } from "./model";
 
-// --- contract code goes below
-
-// The maximum number of latest messages the contract returns.
-const MESSAGE_LIMIT = 10;
-
-/**
- * Adds a new message under the name of the sender's account id.\
- * NOTE: This is a change method. Which means it will modify the state.\
- * But right now we don't distinguish them with annotations yet.
- */
-export function addMessage(text: string): void {
-  // Creating a new message and populating fields with our data
-  const message = new PostedMessage(text);
-  // Adding the message to end of the persistent collection
-  messages.push(message);
+export function createList(name: string, description: string): string {
+  const newList = new List(name, description);
+  listsStorage.push(newList);
+  return "List created successfully";
 }
 
-/**
- * Returns an array of last N messages.\
- * NOTE: This is a view method. Which means it should NOT modify the state.
- */
-export function getMessages(): PostedMessage[] {
-  const numMessages = min(MESSAGE_LIMIT, messages.length);
-  const startIndex = messages.length - numMessages;
-  const result = new Array<PostedMessage>(numMessages);
-  for(let i = 0; i < numMessages; i++) {
-    result[i] = messages[i + startIndex];
+export function getLists(): List[] {
+  const newArray = new Array<List>(listsStorage.length);
+  for (let i = 0; i < newArray.length; i++) {
+    newArray[i] = listsStorage[i];
   }
-  return result;
+  return newArray;
+}
+
+export function removeList(): void {
+  listsStorage.pop();
+}
+
+export function createListItem(name: string, list: string): string {
+  const newItem = new ListItem(name, list);
+  listsItemsStorage.push(newItem);
+  return "List item created successfully";
+}
+
+export function getListsItems(): ListItem[] {
+  const newArray = new Array<ListItem>(listsItemsStorage.length);
+  for (let i = 0; i < newArray.length; i++) {
+    newArray[i] = listsItemsStorage[i];
+  }
+  return newArray;
+}
+
+export function getList(listName: string): ListItem[] {
+  const allListItems = getListsItems();
+  const newArray = new Array<ListItem>();
+  for (let i = 0; i < allListItems.length; i++) {
+    const isItemList: bool = allListItems[i].listOwner.includes(listName);
+    if (isItemList) {
+      newArray.push(allListItems[i]);
+    }
+  }
+  return newArray;
 }

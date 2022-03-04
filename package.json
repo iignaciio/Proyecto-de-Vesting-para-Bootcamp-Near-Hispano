@@ -1,6 +1,6 @@
 {
-  "name": "guest-book",
-  "version": "0.1.0",
+  "name": "lists-chain",
+  "version": "1.0.0",
   "license": "(MIT AND Apache-2.0)",
   "scripts": {
     "build": "yarn build:contract && yarn build:web",
@@ -43,7 +43,7 @@
     "regenerator-runtime": "^0.13.9"
   },
   "resolutions": {
-     "@babel/preset-env": "7.13.8"
+    "@babel/preset-env": "7.13.8"
   },
   "jest": {
     "projects": [
